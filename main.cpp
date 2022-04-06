@@ -24,7 +24,9 @@ int main()
         randomDate.day= GetRandomNumber(1, 31);
         randomDate.month = GetRandomNumber(1, 12);
         randomDate.year = GetRandomNumber(MIN_YEAR, MAX_YEAR);
-        std::string correct = GetWeekday(randomDate);
+        SetMaxDays(randomDate);
+
+        std::string answer = GetWeekday(randomDate);
 
         std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
         
@@ -37,23 +39,25 @@ int main()
         std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
 
         userAnswer.resize(3);
-        std::string correct_short = correct;
-        correct_short.resize(3);
+        std::string answer_short = answer;
+        answer_short.resize(3);
 
-        if(correct_short == userAnswer)
+        if(answer_short == userAnswer)
         {
-            std::cout << "\nYou got it right. It was a " << correct << "!" << std::endl;
+            std::cout << "\nYou got it right. It was a " << answer << "!" << std::endl;
 
             currentStreak++;
             std::cout << "Current streak: " << currentStreak << "\tTime spent: " << std::chrono::duration_cast<std::chrono::seconds>(end - begin).count() << "s." << std::endl;
-            std::cout << ". . . \n\n" << std::endl;
-            sleep(3);
+         
         }
         else
         {
-            std::cout << "\nYou got it wrong. It was a " << correct << "." << std::endl;
+            std::cout << "\nYou got it wrong. It was a " << answer << "." << std::endl;
             currentStreak = 0;
         }
+
+        std::cout << "\nContinuing...\n" << std::endl;
+        sleep(2);
     }
 
 }
@@ -154,16 +158,8 @@ void PopulateMap(std::map<int, std::string> &map)
     map.emplace(12, "December");
 }
 
-void GetUserInput(Date &inputDate)
+void SetMaxDays(Date &inputDate)
 {
-    std::cout << "Please enter a date!" << std::endl;
-    std::cout << "Day: ";
-    std::cin >> inputDate.day;
-    std::cout << "Month: ";
-    std::cin >> inputDate.month;
-    std::cout << "Year: ";
-    std::cin >> inputDate.year;
-
     int maxDays = 31;
 
     inputDate.year = inputDate.year < 0 ? 0 : inputDate.year;
